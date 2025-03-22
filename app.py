@@ -3,14 +3,17 @@ from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
 import psycopg2
 
+import os
+
+# Database connection
 def get_db_connection():
     try:
         connection = psycopg2.connect(
-            dbname="wachatbot",
-            user="om",
-            password="T0tba8d4ZsBOyHOpje5SHV7eSnQHLiEZ",
-            host="dpg-cvf6nn52ng1s73d2gslg-a.singapore-postgres.render.com",
-            port="5432"
+            dbname=os.getenv('DB_NAME'),
+            user=os.getenv('DB_USER'),
+            password=os.getenv('DB_PASSWORD'),
+            host=os.getenv('DB_HOST'),
+            port=os.getenv('DB_PORT')
         )
         print("Database connected successfully!")
         return connection
@@ -22,10 +25,10 @@ def get_db_connection():
 app = Flask(__name__)
 
 # Trello Configuration
-TRELLO_API_KEY = '3dad77ed287d634221c484a9d8474459'
-TRELLO_TOKEN = 'ATTA0222485c5c1433102dbc2dd23f22835727d0da23eb649c9c75a1e82f7c6fe1dfFC1D0FC8'
-BOARD_ID = 'rhDqY0vP'
-LIST_ID = '67ddbefc79deeec6744e8cbb'
+TRELLO_API_KEY = os.getenv('TRELLO_API_KEY')
+TRELLO_TOKEN = os.getenv('TRELLO_TOKEN')
+BOARD_ID = os.getenv('BOARD_ID')
+LIST_ID = os.getenv('LIST_ID')
 
 # In-memory state storage for users
 user_state = {}
